@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
+import './App.css'; 
 function App() {
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm('service_1org40e', 'template_4vjt97l', form.current, {
+        publicKey: 'N6JtbQtT4_ptlDEH1',
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+        },
+      );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <form ref={form} onSubmit={sendEmail} className="form">
+        <label>Name</label>
+        <input type="text" name="user_name" className="input-field" />
+        <label>Email</label>
+        <input type="email" name="user_email" className="input-field" />
+        <label>Phone number</label>
+        <input type="text" name="user_number" className="input-field" />
+        <label>Message</label>
+        <textarea name="message" className="textarea-field" />
+        <input type="submit" value="Send" className="submit-btn" />
+      </form>
     </div>
   );
-}
+};
 
 export default App;
